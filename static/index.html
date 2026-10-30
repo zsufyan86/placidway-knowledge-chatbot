@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlacidWay Knowledge Chatbot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6f9; --panel: #ffffff; --ink: #18212f; --muted: #5d6b7e; --line: #e2e7ee;
+    --brand: #0f5ea8; --brand-ink: #ffffff; --brand-soft: #e8f1fb; --user: #0f5ea8;
+    --warn-bg: #fff7e6; --warn-ink: #7a4d00; --ok: #1d7a46;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif; background: var(--bg); color: var(--ink);
+         display: flex; justify-content: center; }
+  .app { width: 100%; max-width: 820px; height: 100%; display: flex; flex-direction: column; background: var(--panel);
+         border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+  header { padding: 14px 18px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; }
+  .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--brand); color: #fff; display: grid; place-items: center;
+          font-weight: 700; font-size: 15px; flex: none; }
+  .title { flex: 1; min-width: 0; }
+  .title h1 { margin: 0; font-size: 16px; font-weight: 600; }
+  .title p { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
+  .hbtn { border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px; padding: 7px 11px;
+          font: inherit; font-size: 13px; cursor: pointer; white-space: nowrap; }
+  .hbtn:hover { border-color: var(--brand); color: var(--brand); }
+  .hbtn.live { background: #c62828; border-color: #c62828; color: #fff; }
+  #log { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .msg { max-width: 86%; line-height: 1.5; font-size: 14.5px; }
+  .msg.user { align-self: flex-end; background: var(--user); color: #fff; padding: 10px 14px; border-radius: 14px 14px 4px 14px;
+              white-space: pre-wrap; word-wrap: break-word; }
+  .msg.bot { align-self: flex-start; }
+  .bubble { background: var(--bg); padding: 11px 14px; border-radius: 14px 14px 14px 4px; word-wrap: break-word; }
+  .bubble p { margin: 0 0 8px; } .bubble p:last-child { margin: 0; }
+  .bubble ul { margin: 4px 0 8px; padding-left: 20px; } .bubble li { margin: 2px 0; }
+  .sources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; text-decoration: none; color: var(--brand);
+          background: var(--brand-soft); border: 1px solid #cfe1f5; border-radius: 999px; padding: 4px 10px; max-width: 100%; }
+  .chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip:hover { background: #d9e9fa; }
+  .note { margin-top: 8px; font-size: 12px; color: var(--warn-ink); background: var(--warn-bg); border-radius: 8px; padding: 7px 10px; }
+  .cta { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .cta button, .cta a { font: inherit; font-size: 13px; border-radius: 8px; padding: 6px 11px; cursor: pointer; text-decoration: none; }
+  .cta button { background: var(--brand); color: #fff; border: 1px solid var(--brand); }
+  .cta a { color: var(--brand); border: 1px solid var(--line); background: #fff; }
+  form.lead { margin-top: 10px; display: grid; gap: 8px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+  form.lead input[type=text], form.lead input[type=email], form.lead textarea { font: inherit; font-size: 14px; padding: 8px 10px;
+          border: 1px solid var(--line); border-radius: 8px; width: 100%; }
+  form.lead label.c { font-size: 12.5px; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
+  form.lead .row { display: flex; gap: 8px; align-items: center; }
+  form.lead .msgline { font-size: 13px; }
+  .typing { display: inline-flex; gap: 4px; padding: 13px 14px; background: var(--bg); border-radius: 14px; }
+  .typing i { width: 7px; height: 7px; background: #9aa7b8; border-radius: 50%; animation: b 1s infinite; }
+  .typing i:nth-child(2) { animation-delay: .15s } .typing i:nth-child(3) { animation-delay: .3s }
+  @keyframes b { 0%, 80%, 100% { opacity: .3 } 40% { opacity: 1 } }
+  .suggest { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .suggest button { font: inherit; font-size: 13px; background: #fff; border: 1px solid var(--line); border-radius: 999px;
+                    padding: 6px 12px; cursor: pointer; color: var(--ink); }
+  .suggest button:hover { border-color: var(--brand); color: var(--brand); }
+  footer { border-top: 1px solid var(--line); padding: 12px 14px; }
+  .composer { display: flex; gap: 8px; }
+  .composer textarea { flex: 1; resize: none; font: inherit; font-size: 15px; padding: 11px 12px; border: 1px solid var(--line);
+                       border-radius: 10px; min-height: 46px; max-height: 140px; outline: none; }
+  .composer textarea:focus { border-color: var(--brand); }
+  .composer button { background: var(--brand); color: #fff; border: 0; border-radius: 10px; padding: 0 18px; font: inherit;
+                     font-weight: 600; cursor: pointer; }
+  .composer button:disabled { opacity: .5; cursor: default; }
+  .fine { font-size: 11.5px; color: var(--muted); margin-top: 7px; text-align: center; }
+  .voice-status { font-size: 12.5px; color: var(--muted); padding: 0 18px 8px; display: none; }
+  @media (max-width: 600px) { .msg { max-width: 94%; } .title p { display: none; } header { padding: 12px; } #log { padding: 12px; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo" aria-hidden="true">PW</div>
+    <div class="title">
+      <h1>PlacidWay Knowledge Chatbot</h1>
+      <p>Answers only from 7 PlacidWay pages, with the source for every answer</p>
+    </div>
+    <button class="hbtn" id="voiceBtn" hidden>🎙 Voice</button>
+    <button class="hbtn" id="newChat">New chat</button>
+  </header>
+  <div class="voice-status" id="voiceStatus"></div>
+  <div id="log" aria-live="polite"></div>
+  <footer>
+    <div class="composer">
+      <textarea id="input" rows="1" dir="auto" placeholder="Ask about ITC Tijuana treatments, packages or prices..." maxlength="800"></textarea>
+      <button id="send">Send</button>
+    </div>
+    <div class="fine">Information from PlacidWay's pages only. Not medical advice. Demo built by Muhammad Sufyan Zahid.</div>
+  </footer>
+</div>
+
+<script>
+const SUGGESTIONS = [
+  "How much does the adrenal cancer treatment cost in Mexico?",
+  "What is included in the anal cancer treatment package?",
+  "Is alternative medicine cheaper in Thailand or Turkey?",
+  "¿Cuánto cuesta el tratamiento de adenocarcinoma?",
+];
+const logEl = document.getElementById("log");
+const input = document.getElementById("input");
+const sendBtn = document.getElementById("send");
+let history = [];
+let disclaimerShown = false;
+let busy = false;
+let cfg = { quote_url: "https://www.placidway.com/request-info" };
+
+function esc(s) { return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+// Tiny, safe markdown: escape first, then bold and bullet lists only.
+function render(md) {
+  const lines = esc(md).split(/\n/);
+  let html = "", inList = false;
+  for (const raw of lines) {
+    const line = raw.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    const m = line.match(/^\s*(?:[-*•]|\d+\.)\s+(.*)$/);
+    if (m) { if (!inList) { html += "<ul>"; inList = true; } html += `<li>${m[1]}</li>`; continue; }
+    if (inList) { html += "</ul>"; inList = false; }
+    if (line.trim()) html += `<p>${line}</p>`;
+  }
+  if (inList) html += "</ul>";
+  return html;
+}
+
+function scroll() { logEl.scrollTop = logEl.scrollHeight; }
+
+function addUser(text) {
+  const d = document.createElement("div");
+  d.className = "msg user"; d.dir = "auto"; d.textContent = text;
+  logEl.appendChild(d); scroll();
+}
+
+function addBot(r) {
+  const wrap = document.createElement("div");
+  wrap.className = "msg bot";
+  const b = document.createElement("div");
+  b.className = "bubble"; b.dir = "auto"; b.innerHTML = render(r.answer || "");
+  wrap.appendChild(b);
+  if (r.sources && r.sources.length) {
+    const s = document.createElement("div"); s.className = "sources";
+    for (const src of r.sources) {
+      const a = document.createElement("a");
+      a.className = "chip"; a.href = src.url; a.target = "_blank"; a.rel = "noopener";
+      a.title = src.title;
+      a.innerHTML = `🔗 <span>${esc(src.type)}: ${esc(src.title)}</span>`;
+      s.appendChild(a);
+    }
+    wrap.appendChild(s);
+  }
+  if (r.disclaimer) {
+    const n = document.createElement("div"); n.className = "note"; n.textContent = r.disclaimer;
+    wrap.appendChild(n); disclaimerShown = true;
+  }
+  if (r.wants_quote || r.quote_url) {
+    const c = document.createElement("div"); c.className = "cta";
+    const btn = document.createElement("button"); btn.textContent = "Get a free quote";
+    btn.onclick = () => { btn.disabled = true; wrap.appendChild(leadForm()); scroll(); };
+    const a = document.createElement("a"); a.href = r.quote_url || cfg.quote_url; a.target = "_blank"; a.rel = "noopener";
+    a.textContent = "Open PlacidWay quote form";
+    c.append(btn, a); wrap.appendChild(c);
+    // The visitor asked for a quote: open the form straight away.
+    if (r.status === "quote_request") { btn.disabled = true; wrap.appendChild(leadForm()); }
+  }
+  logEl.appendChild(wrap); scroll();
+}
+
+function leadForm() {
+  const f = document.createElement("form"); f.className = "lead";
+  const lastQ = [...history].reverse().find(t => t.role === "user")?.content || "";
+  f.innerHTML = `
+    <strong style="font-size:14px">Get a free quote from PlacidWay</strong>
+    <input type="text" name="name" placeholder="Your name" required maxlength="120">
+    <input type="email" name="email" placeholder="Your email" required maxlength="200">
+    <textarea name="question" rows="2" maxlength="1000" dir="auto">${esc(lastQ)}</textarea>
+    <label class="c"><input type="checkbox" name="consent"> I agree that PlacidWay may contact me about my request.</label>
+    <div class="row"><div class="cta" style="margin:0"><button type="submit">Send request</button></div><span class="msgline"></span></div>`;
+  f.onsubmit = async (e) => {
+    e.preventDefault();
+    const out = f.querySelector(".msgline");
+    const data = Object.fromEntries(new FormData(f));
+    data.consent = !!f.consent.checked;
+    try {
+      const r = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      const j = await r.json();
+      if (!r.ok) { out.style.color = "#b42318"; out.textContent = j.detail?.[0]?.msg || j.detail || "Please check the form."; return; }
+      f.innerHTML = `<span style="color:var(--ok)">✓ ${esc(j.message)}</span>`;
+    } catch { out.textContent = "Network error, please try again."; }
+  };
+  return f;
+}
+
+function typing(on) {
+  let t = document.getElementById("typing");
+  if (on && !t) { t = document.createElement("div"); t.id = "typing"; t.className = "msg bot";
+    t.innerHTML = '<div class="typing"><i></i><i></i><i></i></div>'; logEl.appendChild(t); scroll(); }
+  if (!on && t) t.remove();
+}
+
+async function ask(text) {
+  text = text.trim();
+  if (!text || busy) return;
+  busy = true; sendBtn.disabled = true;
+  addUser(text); input.value = ""; autosize();
+  typing(true);
+  try {
+    const r = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text, history, disclaimer_shown: disclaimerShown }) });
+    const j = await r.json();
+    typing(false); addBot(j);
+    history.push({ role: "user", content: text }, { role: "assistant", content: j.answer || "" });
+    history = history.slice(-12);
+  } catch (e) {
+    typing(false); addBot({ answer: "Sorry, I couldn't reach the server. Please try again." });
+  } finally { busy = false; sendBtn.disabled = false; input.focus(); }
+}
+
+function welcome() {
+  logEl.innerHTML = "";
+  addBot({ answer: "Hi! I answer questions using only PlacidWay's pages about **ITC Immunity Therapy Center** in Tijuana, Mexico, its cancer treatment packages and prices, plus alternative medicine prices abroad. Every answer links to the page it came from. You can write in any language." });
+  const s = document.createElement("div"); s.className = "suggest";
+  for (const q of SUGGESTIONS) { const b = document.createElement("button"); b.textContent = q; b.onclick = () => ask(q); s.appendChild(b); }
+  logEl.appendChild(s);
+}
+
+function autosize() { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 140) + "px"; }
+input.addEventListener("input", autosize);
+input.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ask(input.value); } });
+sendBtn.onclick = () => ask(input.value);
+document.getElementById("newChat").onclick = () => { history = []; disclaimerShown = false; welcome(); };
+
+// Optional voice agent (Vapi). Only shown when the server has keys configured.
+async function setupVoice() {
+  try { cfg = await (await fetch("/api/config")).json(); } catch { return; }
+  if (!cfg.vapi_public_key || !cfg.vapi_assistant_id) return;
+  const btn = document.getElementById("voiceBtn"), status = document.getElementById("voiceStatus");
+  btn.hidden = false;
+  let vapi = null, live = false;
+  btn.onclick = async () => {
+    try {
+      if (!vapi) {
+        const { default: Vapi } = await import("https://esm.sh/@vapi-ai/web");
+        vapi = new Vapi(cfg.vapi_public_key);
+        vapi.on("call-start", () => { live = true; btn.classList.add("live"); btn.textContent = "■ End call";
+          status.style.display = "block"; status.textContent = "Voice call live. Ask your question out loud."; });
+        vapi.on("call-end", () => { live = false; btn.classList.remove("live"); btn.textContent = "🎙 Voice";
+          status.style.display = "none"; });
+        vapi.on("message", m => {
+          if (m.type === "transcript" && m.transcriptType === "final") {
+            if (m.role === "user") addUser(m.transcript); else addBot({ answer: m.transcript });
+          }
+        });
+        vapi.on("error", () => { status.style.display = "block"; status.textContent = "Voice error. Please use text chat."; });
+      }
+      if (live) vapi.stop(); else { status.style.display = "block"; status.textContent = "Connecting..."; vapi.start(cfg.vapi_assistant_id); }
+    } catch { status.style.display = "block"; status.textContent = "Voice is unavailable right now. Please use text chat."; }
+  };
+}
+
+welcome(); setupVoice(); input.focus();
+</script>
+</body>
+</html>
