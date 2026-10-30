@@ -240,6 +240,7 @@ def test_comparison_question_asks_for_a_verdict(live_like_kb):
                        "Thailand price is lower.", [n])])
     r = respond(q, [], live_like_kb, llm)
     assert "comparison question" in llm.calls[0]["prompt"] and r["status"] == "answered"
+    assert "like-for-like only if the listed procedures are the same" in llm.calls[0]["prompt"]
 
 
 def test_follow_ups_are_told_not_to_pass_off_related_facts_as_the_answer(kb):

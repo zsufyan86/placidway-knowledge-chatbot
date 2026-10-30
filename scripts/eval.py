@@ -27,7 +27,7 @@ CASES = [
     ("c1", "1 Cost", "How much does the adrenal cancer treatment cost in Mexico?",
      {"status": {"answered"}, "contains": ["18,995", "30,000"], "source": "7902"}),
     ("c1", "2 Comparison", "Is alternative medicine cheaper in Thailand or Turkey?",
-     {"status": {"answered"}, "source": "search-medical-pricings", "contains": ["$64", "$110"],
+     {"status": {"answered"}, "source": "search-medical-pricings", "contains": ["$64", "$110", "zone"],
       "contains_any": ["lower", "cheaper", "less"]}),
     ("c1", "3 Procedure", "What is included in the anal cancer treatment package?",
      {"status": {"answered"}, "source": "7901"}),

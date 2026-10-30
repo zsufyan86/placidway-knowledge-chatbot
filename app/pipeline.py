@@ -303,8 +303,10 @@ def respond(question: str, history: list | None, kb: KnowledgeBase, llm,
                     "SOURCES list for it, with citations.")
         if _COMPARE.search(question):
             note += (" This is a comparison question. If both sides have a price in the SOURCES, end with one "
-                     "sentence saying which listed price is lower (and whether they are for the same treatment). "
-                     "If one side is missing, say which one.")
+                     "sentence saying which listed price is lower. Name the specific procedure the page lists for "
+                     "each price (physiotherapy, ozone therapy ...), not just 'alternative medicine'. Call them "
+                     "like-for-like only if the listed procedures are the same; otherwise say they are different "
+                     "treatments. If one side is missing, say which one.")
 
         if history:
             # In a longer chat the model tends to carry on summarising instead
