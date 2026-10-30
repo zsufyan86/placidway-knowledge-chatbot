@@ -306,6 +306,14 @@ def respond(question: str, history: list | None, kb: KnowledgeBase, llm,
                      "sentence saying which listed price is lower (and whether they are for the same treatment). "
                      "If one side is missing, say which one.")
 
+        if history:
+            # In a longer chat the model tends to carry on summarising instead
+            # of admitting the follow-up isn't answered on the pages.
+            note += (" Answer the LATEST USER MESSAGE itself, not the earlier questions. If the SOURCES answer it, "
+                     "answer directly with status answered and do not say the pages lack it. Only if they truly "
+                     "do not (for example, a program length does not answer a recovery time question), say so in "
+                     "the first sentence with status not_in_content, then add closely related facts.")
+
         prompt = answer_prompt(question, history, chunks, note.strip())
         parsed, reason = None, ""
         for attempt in range(2):

@@ -26,13 +26,13 @@ OUT = Path(__file__).resolve().parent.parent / "test_results.md"
 CASES = [
     ("c1", "1 Cost", "How much does the adrenal cancer treatment cost in Mexico?",
      {"status": {"answered"}, "contains": ["18,995", "30,000"], "source": "7902"}),
-    ("c2", "2 Comparison", "Is alternative medicine cheaper in Thailand or Turkey?",
+    ("c1", "2 Comparison", "Is alternative medicine cheaper in Thailand or Turkey?",
      {"status": {"answered"}, "source": "search-medical-pricings", "contains": ["$64", "$110"],
       "contains_any": ["lower", "cheaper", "less"]}),
-    ("c3", "3 Procedure", "What is included in the anal cancer treatment package?",
+    ("c1", "3 Procedure", "What is included in the anal cancer treatment package?",
      {"status": {"answered"}, "source": "7901"}),
-    ("c3", "4 Follow-up", "And what about recovery time?",
-     {"status": {"answered", "not_in_content"}, "source_if_any": "7901"}),
+    ("c1", "4 Follow-up", "And what about recovery time?",
+     {"status": {"not_in_content"}, "source_if_any": "7901", "not_starts": r"^\W*(the|this)?\s*(program|package) (is|lasts|takes)"}),
     ("c5", "5 Not in content", "Can you book me an appointment for tomorrow?",
      {"status": {"cannot_do", "not_in_content"}, "quote": True}),
     ("c6", "6 Out of scope", "What is the weather in Cancun?",
@@ -137,7 +137,7 @@ def main():
            f"Run against `{BASE}` on {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC. "
            f"Model: `{health.get('model') or 'see /api/health'}`. Knowledge base built: {health.get('kb_built_at')}.\n",
            f"Automatic checks passed: **{passed}/{len(rows)}**. Questions 1 to 8 are the brief's test questions "
-           "(4 is a follow-up to 3 in the same conversation); the rest are extra edge cases. "
+           "(1 to 4 run in one conversation, so 4 is a follow-up to 3); the rest are extra edge cases. "
            "The checks are a smoke test; the answers below are the real evidence.\n",
            "| # | Type | Status | Sources | Check |\n|---|---|---|---|---|"]
     for n, (kind, q, r, problems, ms) in enumerate(rows, 1):

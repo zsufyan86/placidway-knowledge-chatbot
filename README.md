@@ -73,7 +73,7 @@ py -3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements-dev.txt
 copy .env.example .env          # then open .env and paste your GEMINI_API_KEY and an ADMIN_TOKEN
-pytest -q                       # 56 unit tests, no network or API key needed
+pytest -q                       # 57 unit tests, no network or API key needed
 uvicorn app.main:app --port 7860
 ```
 

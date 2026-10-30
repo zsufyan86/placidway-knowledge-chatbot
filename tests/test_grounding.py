@@ -240,3 +240,13 @@ def test_comparison_question_asks_for_a_verdict(live_like_kb):
                        "Thailand price is lower.", [n])])
     r = respond(q, [], live_like_kb, llm)
     assert "comparison question" in llm.calls[0]["prompt"] and r["status"] == "answered"
+
+
+def test_follow_ups_are_told_not_to_pass_off_related_facts_as_the_answer(kb):
+    history = [{"role": "user", "content": "What is included in the adrenal package?"},
+               {"role": "assistant", "content": "A 3-week program with weekly lab work."}]
+    llm = FakeLLM([ans("The pages do not state a recovery time.", [], status="not_in_content")])
+    r = respond("And what about recovery time?", history, kb, llm)
+    assert r["status"] == "not_in_content" and r["quote_url"]
+    assert "LATEST USER MESSAGE itself" in llm.calls[-1]["prompt"]
+    assert "a program length is not a recovery time" in llm.calls[-1]["system"]
