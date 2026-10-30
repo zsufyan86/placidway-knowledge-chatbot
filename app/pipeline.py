@@ -113,6 +113,7 @@ _QUOTE_INTENT = re.compile(
     r"cotizaci\w*|presupuesto|cont[aá]cte\w*|ll[aá]me\w*)\b|عرض سعر|تواصل|اتصل",
     re.I,
 )
+_FOLLOW_UP = re.compile(r"^\W*(and|also|then|what about|how about|same)\b", re.I)
 _COMPARE = re.compile(
     r"\b(cheaper|more expensive|less expensive|compare\w*|comparison|versus|vs\.?|difference in price|"
     r"m[aá]s barato|m[aá]s caro|comparar)\b|أرخص|مقارنة",
@@ -276,7 +277,11 @@ def respond(question: str, history: list | None, kb: KnowledgeBase, llm,
         return finish("injection pattern")
 
     prev_user = [t["content"] for t in history if t["role"] == "user"][-1:]
-    search_query = " ".join([question] + prev_user)
+    # Search with the previous question only for real follow-ups. A question
+    # that names its own treatment or place stands alone: mixing in an older
+    # question ("cheaper in Turkey?") would pull the search toward its topic.
+    follow_up = bool(_FOLLOW_UP.search(question)) or not guards.names_entity(question)
+    search_query = " ".join([question] + (prev_user if follow_up else []))
     chunks, top = kb.retriever.context_for(search_query, config.TOP_K, config.MAX_PER_PAGE)
 
     try:

@@ -117,6 +117,11 @@ def _entities(text: str) -> dict[str, set[str]]:
     return {g: tokens & names for g, names in ENTITY_GROUPS.items() if tokens & names}
 
 
+def names_entity(text: str) -> bool:
+    """Does the text name a country, city or cancer type of its own?"""
+    return bool(_entities(text))
+
+
 def _figure_lines(chunks: list[dict], figure: str) -> list[tuple[str, str]]:
     """(page url, line) for each source line that contains `figure`. The line
     carries its page title and section heading, which say what it is for."""

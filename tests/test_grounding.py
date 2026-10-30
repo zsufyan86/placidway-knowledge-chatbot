@@ -251,3 +251,14 @@ def test_follow_ups_are_told_not_to_pass_off_related_facts_as_the_answer(kb):
     assert r["status"] == "not_in_content" and r["quote_url"]
     assert "LATEST USER MESSAGE itself" in llm.calls[-1]["prompt"]
     assert "a program length is not a recovery time" in llm.calls[-1]["system"]
+
+
+def test_only_real_follow_ups_search_with_the_previous_question(kb):
+    history = [{"role": "user", "content": "Is alternative medicine cheaper in Thailand or Turkey?"},
+               {"role": "assistant", "content": "Thailand is lower."}]
+    standalone = FakeLLM([ans("Weekly lab work.", [1])])
+    respond("What is included in the adrenal out-patient program?", history, kb, standalone)
+    assert "Which Clinics Abroad" not in standalone.calls[-1]["prompt"]
+    follow_up = FakeLLM([ans("The pages do not say.", [], status="not_in_content")])
+    respond("And what about massage?", history, kb, follow_up)
+    assert "Which Clinics Abroad" in follow_up.calls[-1]["prompt"]
