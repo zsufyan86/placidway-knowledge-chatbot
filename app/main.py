@@ -36,17 +36,21 @@ BUSY = {"answer": "The assistant is very busy right now. Please wait a few minut
         "sources": [], "status": "rate_limited", "wants_quote": True, "quote_url": QUOTE_URL, "disclaimer": None}
 
 
+# Load the committed snapshot as soon as the module is imported, so the bot is
+# ready even on hosts that don't run ASGI startup events (serverless).
+if config.KB_PATH.exists():
+    kb.load_or_build()
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     if not config.GEMINI_API_KEY:
         log.warning("GEMINI_API_KEY is not set: the bot will answer every question with a 'try again' message")
     if not config.ADMIN_TOKEN:
         log.warning("ADMIN_TOKEN is not set: /api/refresh and the admin exports are disabled")
-    # Load the committed snapshot instantly; crawl in the background only if
-    # there is none, so the server is reachable straight away.
-    if (config.KB_PATH).exists():
-        kb.load_or_build()
-    else:
+    # No snapshot (already loaded above if there is one): crawl in the
+    # background so the server is reachable straight away.
+    if not kb.ready:
         threading.Thread(target=kb.load_or_build, daemon=True).start()
     yield
 
@@ -157,6 +161,10 @@ def refresh(authorization: str | None = Header(default=None)):
     require_admin(authorization)
     if kb.refreshing:
         return {"status": "already running"}
+    if config.SERVERLESS:
+        # A serverless function stops once it has replied, so crawl now
+        # (about 70 s) and return the result.
+        return kb.refresh()
     threading.Thread(target=kb.refresh, daemon=True).start()
     return {"status": "started", "note": "takes about 70 seconds (robots.txt Crawl-delay is 10s); "
                                          "check GET /api/kb for last_refresh"}

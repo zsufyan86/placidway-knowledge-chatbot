@@ -122,7 +122,11 @@ class KnowledgeBase:
                     self.set(new)  # better partial than nothing on first boot
                 return self.last_refresh
             changed = diff_pages(self.kb, new)
-            save_kb(new)
+            try:
+                save_kb(new)
+            except OSError as exc:  # read-only filesystem (serverless): keep it in memory
+                log.warning("could not save %s (%s); the new knowledge base is in memory only",
+                            config.KB_PATH, exc)
             self.set(new)
             self.last_refresh = {
                 "status": "updated",

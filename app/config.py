@@ -24,8 +24,11 @@ def _load_dotenv(path: Path) -> None:
 
 _load_dotenv(ROOT / ".env")
 
+# Vercel runs the app as a serverless function: the code folder is read-only
+# and only /tmp can be written (and is wiped between cold starts).
+SERVERLESS = bool(os.getenv("VERCEL"))
 DATA_DIR = Path(os.getenv("DATA_DIR", ROOT / "data"))
-LOG_DIR = Path(os.getenv("LOG_DIR", ROOT / "logs"))
+LOG_DIR = Path(os.getenv("LOG_DIR", "/tmp/logs" if SERVERLESS else ROOT / "logs"))
 KB_PATH = DATA_DIR / "kb.json"
 
 # Gemini. GEMINI_MODEL can be a comma separated list; the first one that
