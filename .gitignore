@@ -6,3 +6,8 @@ venv/
 logs/
 .pytest_cache/
 data/kb.tmp
+.vercel
+
+.vercel
+.env*
+LOOM_SCRIPT.md

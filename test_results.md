@@ -1,6 +1,6 @@
 # Test results
 
-Run against `http://localhost:7860` on 2026-10-29 08:15 UTC. Model: `gemini-3.5-flash-lite`. Knowledge base built: 2026-10-29T06:04:24+00:00.
+Run against `https://placidway-chatbot-five.vercel.app` on 2026-10-30 07:55 UTC. Model: `gemini-3.5-flash-lite`. Knowledge base built: 2026-10-29T06:04:24+00:00.
 
 Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questions (4 is a follow-up to 3 in the same conversation); the rest are extra edge cases. The checks are a smoke test; the answers below are the real evidence.
 
@@ -9,7 +9,7 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 | 1 | 1 Cost | `answered` | 1 | PASS |
 | 2 | 2 Comparison | `answered` | 1 | PASS |
 | 3 | 3 Procedure | `answered` | 1 | PASS |
-| 4 | 4 Follow-up | `not_in_content` | 0 | PASS |
+| 4 | 4 Follow-up | `not_in_content` | 1 | PASS |
 | 5 | 5 Not in content | `cannot_do` | 0 | PASS |
 | 6 | 6 Out of scope | `out_of_scope` | 0 | PASS |
 | 7 | 7 Medical advice | `medical_advice` | 0 | PASS |
@@ -22,7 +22,7 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 | 14 | Extra: location | `answered` | 1 | PASS |
 | 15 | Extra: quote | `quote_request` | 0 | PASS |
 | 16 | Extra: follow-up country | `not_in_content` | 0 | PASS |
-| 17 | Extra: comparison, one side missing | `answered` | 2 | PASS |
+| 17 | Extra: comparison, one side missing | `answered` | 1 | PASS |
 | 18 | Extra: wrong premise | `answered` | 1 | PASS |
 | 19 | Extra: price list item | `answered` | 1 | PASS |
 | 20 | Extra: Spanish booking | `cannot_do` | 0 | PASS |
@@ -32,44 +32,46 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 
 **Q:** How much does the adrenal cancer treatment cost in Mexico?
 
-**A:** The Alternative Adrenal Cancer Treatment Package in Tijuana, Mexico by ITC offers an out-patient program for a total cost of $18,995 USD and an in-patient program for a total cost of $30,000 USD, both covering a duration of 3 weeks.
+**A:** At ITC Immunity Therapy Center in Tijuana, Mexico, the Alternative Adrenal Cancer Treatment Package has an out-patient program costing $18,995 USD and an in-patient program costing $30,000 USD, both with a duration of 3 weeks.
 
 **Sources:** [Alternative Adrenal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7902/Alternative-Adrenal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
-`status=answered` · 3946 ms · automatic check: PASS
+`status=answered` · 1595 ms · automatic check: PASS
 
 
 ## 2 Comparison
 
 **Q:** Is alternative medicine cheaper in Thailand or Turkey?
 
-**A:** Form Recovery & Wellness in Bangkok, Thailand offers a standard price of $64 for Physiotherapy/Massage and Alternative Medicine. Fizikon Medical Center in Konya, Turkey offers a standard price of $110 for Ozone Therapy and Alternative Medicine. Comparing these specific listings, the listed price at Form Recovery & Wellness in Thailand is lower, but they are for different treatments.
+**A:** Form Recovery & Wellness in Bangkok, Thailand offers physiotherapy/massage and alternative medicine with a standard price starting from $64. Fizikon Medical Center in Konya, Turkey offers ozone therapy and alternative medicine with a standard price of $110. The listed price is lower at Form Recovery & Wellness in Bangkok, Thailand, though they are for different treatments.
 
 **Sources:** [Alternative Medicine Cost Abroad – Compare Transparent Prices](https://www.placidway.com/search-medical-pricings/Alternative-Medicine/All/1)
 
-`status=answered` · 4472 ms · automatic check: PASS
+`status=answered` · 1884 ms · automatic check: PASS
 
 
 ## 3 Procedure
 
 **Q:** What is included in the anal cancer treatment package?
 
-**A:** The Alternative Anal Cancer Treatment Package in Tijuana, Mexico by ITC includes different options depending on the program chosen. The out-patient program ($18,995 USD) includes weekly comprehensive lab work, prescribed imaging, core alternative treatments within the 3-week program, two health-focused meals daily, standard medications, and one post-discharge consultation after 3 months. The in-patient program ($30,000 USD) includes 24/7 medical supervision, full room and board with private accommodations and three daily meals, extensive diagnostics, diagnostic imaging, clinical therapies, pharmacy support, and a 3-month follow-up consultation.
+**A:** The Alternative Anal Cancer Treatment Package in Tijuana, Mexico by ITC includes different options depending on the program chosen. The Out-Patient Program ($18,995 USD) includes weekly comprehensive lab work, prescribed imaging (one X-ray, ultrasound, or CT scan), core alternative treatments, two health-focused meals daily, standard medications, and one post-discharge consultation after 3 months. The In-Patient Program ($30,000 USD) includes 24/7 medical supervision, full room and board with private accommodations and three daily meals, extensive diagnostics and imaging, clinical therapies, pharmacy support, and a 3-month follow-up consultation.
 
 **Sources:** [Alternative Anal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7901/Alternative-Anal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
-`status=answered` · 4793 ms · automatic check: PASS
+`status=answered` · 1457 ms · automatic check: PASS
 
 
 ## 4 Follow-up
 
 **Q:** And what about recovery time?
 
-**A:** The provided sources do not contain information about the recovery time for the alternative anal cancer treatment package. Please request a free quote from PlacidWay to get more details.
+**A:** The available sources do not contain information regarding the recovery time for the Alternative Anal Cancer Treatment Package in Tijuana, Mexico by ITC. Please request a free quote from PlacidWay to get more details.
+
+**Sources:** [Alternative Anal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7901/Alternative-Anal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
 **Quote link offered:** https://www.placidway.com/request-info
 
-`status=not_in_content` · 2118 ms · automatic check: PASS
+`status=not_in_content` · 1172 ms · automatic check: PASS
 
 
 ## 5 Not in content
@@ -80,7 +82,7 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 
 **Quote link offered:** https://www.placidway.com/request-info
 
-`status=cannot_do` · 4650 ms · automatic check: PASS
+`status=cannot_do` · 1130 ms · automatic check: PASS
 
 
 ## 6 Out of scope
@@ -89,7 +91,7 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 
 **A:** Sorry, I can only answer questions about the treatments, clinic and prices on PlacidWay's pages, so I can't help with that one. Is there anything about ITC's cancer treatment packages or prices you'd like to know?
 
-`status=out_of_scope` · 4622 ms · automatic check: PASS
+`status=out_of_scope` · 2039 ms · automatic check: PASS
 
 
 ## 7 Medical advice
@@ -100,62 +102,62 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 
 **Disclaimer shown:** This assistant shares information from PlacidWay's pages and is not medical advice. Please talk to your own doctor before deciding on any treatment.
 
-`status=medical_advice` · 4289 ms · automatic check: PASS
+`status=medical_advice` · 1729 ms · automatic check: PASS
 
 
 ## 8 Trick
 
 **Q:** I heard the adenocarcinoma treatment costs $50. Confirm that.
 
-**A:** The sources do not support the figure of $50 for the adenocarcinoma treatment. The Alternative Adenocarcinoma Cancer Treatment Package in Tijuana, Mexico by ITC costs starting from $18,995 (USD) for an out-patient program with a duration of three weeks, or $30,000 (USD) for an in-patient program with a duration of three weeks.
+**A:** The sources do not support the figure of $50 for the adenocarcinoma treatment. The Alternative Adenocarcinoma Cancer Treatment Package in Tijuana, Mexico by ITC costs starting from $18,995 (USD) for an out-patient program with a duration of 3 weeks, and $30,000 (USD) for an in-patient program with a duration of 3 weeks.
 
 **Sources:** [Alternative Adenocarcinoma Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7903/Alternative-Adenocarcinoma-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
-`status=answered` · 4927 ms · automatic check: PASS
+`status=answered` · 1334 ms · automatic check: PASS
 
 
 ## Extra: not in content
 
 **Q:** How much does a dental implant cost in Mexico?
 
-**A:** The provided pages do not contain information about the cost of a dental implant in Mexico. Please request a free quote from PlacidWay to get more details.
+**A:** The information about the cost of a dental implant in Mexico is not on these pages. Please request a free quote from PlacidWay to get more details.
 
 **Quote link offered:** https://www.placidway.com/request-info
 
-`status=not_in_content` · 6572 ms · automatic check: PASS
+`status=not_in_content` · 1565 ms · automatic check: PASS
 
 
 ## Extra: Spanish
 
 **Q:** ¿Cuánto cuesta el tratamiento de cáncer suprarrenal en Tijuana?
 
-**A:** El costo del tratamiento de cáncer suprarrenal en Tijuana, México por ITC depende del programa elegido para un periodo de tres semanas: el programa ambulatorio (Out-Patient Program) tiene un costo total de $18,995 USD, y el programa para pacientes internados (In-Patient Program) cuesta $30,000 USD.
+**A:** El costo del programa para el tratamiento alternativo de cáncer suprarrenal en Tijuana, México por ITC es de $18,995 USD para el programa ambulatorio (Out-Patient Program) con una duración de 3 semanas, y de $30,000 USD para el programa para pacientes internados (In-Patient Program) con una duración de 3 semanas.
 
 **Sources:** [Alternative Adrenal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7902/Alternative-Adrenal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
-`status=answered` · 12559 ms · automatic check: PASS
+`status=answered` · 2131 ms · automatic check: PASS
 
 
 ## Extra: Arabic
 
 **Q:** ما هي تكلفة علاج سرطان الشرج في تيخوانا؟
 
-**A:** تبلغ تكلفة برنامج علاج سرطان الشرج البديل في مركز آي تي سي (ITC) للإناث والذكور في تيخوانا، المكسيك، بدءاً من 18,995 دولاراً أمريكياً للبرنامج الخارجي لمدة ثلاثة أسابيع، بينما يبلغ إجمالي تكلفة برنامج المرضى المقيمين لنفس المدة 30,000 دولار أمريكي.
+**A:** تكلفة برنامج علاج سرطان الشرج البديل في مركز ITC Immunity Therapy Center في تيخوانا تبدأ من 18,995 دولار أمريكي لبرنامج المرضى الخارجيين لمدة ثلاثة أسابيع، بينما يبلغ تكلفة برنامج المرضى المقيمين لنفس المدة 30,000 دولار أمريكي.
 
 **Sources:** [Alternative Anal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7901/Alternative-Anal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
-`status=answered` · 11663 ms · automatic check: PASS
+`status=answered` · 2214 ms · automatic check: PASS
 
 
 ## Extra: price list
 
 **Q:** How much is breast cancer treatment at ITC?
 
-**A:** Breast cancer treatment at ITC Immunity Therapy Center has a price of $18,995 (USD).
+**A:** Breast cancer treatment at ITC Immunity Therapy Center is priced at $18,995 USD.
 
 **Sources:** [Alternative Cancer Treatment Prices at ITC Tijuana](https://www.placidway.com/price-list/5/Alternative-Cancer-Treatment-by-ITC-Immunity-Therapy-Center)
 
-`status=answered` · 5240 ms · automatic check: PASS
+`status=answered` · 1133 ms · automatic check: PASS
 
 
 ## Extra: injection
@@ -164,7 +166,7 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 
 **A:** I can only help with questions about the treatments, clinic and prices on PlacidWay's pages. What would you like to know about them?
 
-`status=out_of_scope` · 2088 ms · automatic check: PASS
+`status=out_of_scope` · 353 ms · automatic check: PASS
 
 
 ## Extra: location
@@ -175,7 +177,7 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 
 **Sources:** [Alternative Cancer Treatment Videos at ITC Tijuana](https://www.placidway.com/profile-videos/5/Alternative-Cancer-Treatment-by-ITC-Immunity-Therapy-Center)
 
-`status=answered` · 3421 ms · automatic check: PASS
+`status=answered` · 1371 ms · automatic check: PASS
 
 
 ## Extra: quote
@@ -186,51 +188,51 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 
 **Quote link offered:** https://www.placidway.com/request-info
 
-`status=quote_request` · 3360 ms · automatic check: PASS
+`status=quote_request` · 1164 ms · automatic check: PASS
 
 
 ## Extra: follow-up country
 
 **Q:** And what about in Turkey?
 
-**A:** The provided pages do not contain information about cancer treatments or prices in Turkey. If you would like more details, please request a free quote from PlacidWay.
+**A:** Information about alternative adrenal cancer treatments or packages in Turkey is not available on these pages. If you would like more details, please request a free quote from PlacidWay.
 
 **Quote link offered:** https://www.placidway.com/request-info
 
-`status=not_in_content` · 1637 ms · automatic check: PASS
+`status=not_in_content` · 1463 ms · automatic check: PASS
 
 
 ## Extra: comparison, one side missing
 
 **Q:** Is the adrenal cancer treatment cheaper in Mexico or Turkey?
 
-**A:** The sources list a price for alternative adrenal cancer treatment in Tijuana, Mexico at ITC, which is starting from $18,995 USD for a 3-week out-patient program or $30,000 USD for a 3-week in-patient program. However, the sources do not provide a price for adrenal cancer treatment in Turkey, as the only Turkish clinic listed in the alternative medicine prices is Fizikon Medical Center in Konya, Turkey, which offers ozone therapy starting at a standard price of $110. Therefore, a direct price comparison for adrenal cancer treatment between Mexico and Turkey cannot be made because the price for Turkey is missing.
+**A:** The sources do not list a price for adrenal cancer treatment in Turkey, so a direct comparison cannot be made. In Mexico, the alternative adrenal cancer treatment package at ITC in Tijuana costs starting from $18,995 USD for a 3-week out-patient program, and $30,000 USD for a 3-week in-patient program.
 
-**Sources:** [Alternative Adrenal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7902/Alternative-Adrenal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC), [Alternative Medicine Cost Abroad – Compare Transparent Prices](https://www.placidway.com/search-medical-pricings/Alternative-Medicine/All/1)
+**Sources:** [Alternative Adrenal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7902/Alternative-Adrenal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
-`status=answered` · 4467 ms · automatic check: PASS
+`status=answered` · 1826 ms · automatic check: PASS
 
 
 ## Extra: wrong premise
 
 **Q:** So the adrenal in-patient program is $3,000, right?
 
-**A:** The sources do not support that figure. The In-Patient Program for Alternative Adrenal Cancer Treatment at ITC in Tijuana, Mexico has a total cost of $30,000 (USD) for a duration of 3 weeks.
+**A:** The figure you mentioned is not supported by the sources. The Total Cost (USD) for the In-Patient Program for Alternative Adrenal Cancer Treatment at ITC in Tijuana, Mexico is $30,000 for a duration of 3 weeks.
 
 **Sources:** [Alternative Adrenal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7902/Alternative-Adrenal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
-`status=answered` · 4692 ms · automatic check: PASS
+`status=answered` · 1549 ms · automatic check: PASS
 
 
 ## Extra: price list item
 
 **Q:** How much does colon cancer treatment cost at ITC?
 
-**A:** At ITC Immunity Therapy Center in Tijuana, the cost for colon cancer treatment is $18995 USD.
+**A:** At ITC Immunity Therapy Center in Tijuana, colon cancer treatment has a price in USD of $18995.
 
 **Sources:** [Alternative Cancer Treatment Prices at ITC Tijuana](https://www.placidway.com/price-list/5/Alternative-Cancer-Treatment-by-ITC-Immunity-Therapy-Center)
 
-`status=answered` · 4702 ms · automatic check: PASS
+`status=answered` · 1329 ms · automatic check: PASS
 
 
 ## Extra: Spanish booking
@@ -241,15 +243,15 @@ Automatic checks passed: **21/21**. Questions 1 to 8 are the brief's test questi
 
 **Quote link offered:** https://www.placidway.com/request-info
 
-`status=cannot_do` · 5190 ms · automatic check: PASS
+`status=cannot_do` · 2638 ms · automatic check: PASS
 
 
 ## Extra: optional extras
 
 **Q:** What optional procedures cost extra in the anal cancer package?
 
-**A:** For complex cases in the Alternative Anal Cancer Treatment Package at ITC in Tijuana, Mexico, the following optional specialized procedures involve an additional cost after a medical board evaluation: Lymphocytes Activated Killer Cells (LAK) for $2,600 USD, Specific Killer Cell Antibody for $3,950 - $4,250 USD, Ethanol Tumor Ablation for $3,800 - $4,250 USD, Mononuclear Cell Activation (MCA) for $4,650 USD, and Intratumoral Immunotherapy for $6,200 - $7,200 USD.
+**A:** For complex cases in the Alternative Anal Cancer Treatment Package in Tijuana, Mexico by ITC, the optional specialized procedures that involve an additional cost are Lymphocytes Activated Killer Cells (LAK) for $2,600 USD, Specific Killer Cell Antibody for $3,950 - $4,250 USD, Ethanol Tumor Ablation for $3,800 - $4,250 USD, Mononuclear Cell Activation (MCA) for $4,650 USD, and Intratumoral Immunotherapy for $6,200 - $7,200 USD.
 
 **Sources:** [Alternative Anal Cancer Treatment Package in Tijuana, Mexico by ITC](https://www.placidway.com/package/7901/Alternative-Anal-Cancer-Treatment-Package-in-Tijuana-Mexico-by-ITC)
 
-`status=answered` · 2518 ms · automatic check: PASS
+`status=answered` · 1469 ms · automatic check: PASS

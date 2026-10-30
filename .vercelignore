@@ -8,3 +8,5 @@ __pycache__
 .git
 scripts
 docs
+.env.local
+.vercel

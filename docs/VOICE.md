@@ -11,8 +11,8 @@ Vapi dashboard → **Tools** → Create tool → **Function** (custom tool).
 - Name: `ask_placidway`
 - Description: `Answers questions about ITC Immunity Therapy Center in Tijuana, its cancer treatment packages and prices, and alternative medicine prices abroad, using PlacidWay's pages only.`
 - Parameters: one required string `question`, description `The caller's full question in English, rewritten to stand alone (include the treatment name if the caller said it earlier).`
-- Server URL: `https://<space-url>/api/vapi/tool`
-- Required: set a secret header `x-vapi-secret` to a long random value and put the same value in the Space secret `VAPI_TOOL_SECRET`. Without it the endpoint stays switched off (HTTP 503), so nobody can use it to spend your Gemini quota.
+- Server URL: `https://placidway-chatbot-five.vercel.app/api/vapi/tool`
+- Required: set a secret header `x-vapi-secret` to a long random value and put the same value in the Vercel environment variable `VAPI_TOOL_SECRET`. Without it the endpoint stays switched off (HTTP 503), so nobody can use it to spend your Gemini quota.
 
 ## 2. Create the assistant
 
@@ -36,11 +36,11 @@ You cannot book appointments; offer the free quote instead.
 
 ## 3. Connect it to the website
 
-Copy the **Public key** (Vapi → Organization → API keys, the public one, not the private one) and the assistant ID. Add them as Space **variables**:
+Copy the **Public key** (Vapi → Organization → API keys, the public one, not the private one) and the assistant ID. Add them as Vercel **environment variables**:
 
 - `VAPI_PUBLIC_KEY`
 - `VAPI_ASSISTANT_ID`
 
-Restart the Space. A **🎙 Voice** button appears in the header. Voice transcripts show up in the chat.
+Redeploy (`vercel deploy --prod`). A **🎙 Voice** button appears in the header. Voice transcripts show up in the chat.
 
 Vapi gives new accounts free trial credit; check your balance in the dashboard before the review, and leave the voice button out (remove the variables) if credit runs low, so reviewers never hit a broken button.

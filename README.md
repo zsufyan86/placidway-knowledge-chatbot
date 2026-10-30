@@ -1,22 +1,13 @@
----
-title: PlacidWay Knowledge Chatbot
-emoji: 💬
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # PlacidWay Website Knowledge Chatbot
 
 A chatbot that answers visitor questions using **only** the 7 PlacidWay pages from the brief, links every answer to the page it came from, and says "I don't know" (with a free quote link) instead of inventing prices, clinics or medical facts.
 
-- **Live bot:** `https://<your-space>.hf.space` ← **TODO before submitting:** paste the real URL here
-- **Test results:** [`test_results.md`](test_results.md), produced by `python scripts/eval.py <live url>` (8 brief questions + 13 edge cases)
+- **Live bot:** https://placidway-chatbot-five.vercel.app (public, no login)
+- **Code:** https://github.com/zsufyan86/placidway-knowledge-chatbot
+- **Test results:** [`test_results.md`](test_results.md): the 8 brief questions + 13 edge cases, run against the live URL (21/21 automatic checks pass; read the answers too)
 - **Knowledge base snapshot:** [`data/kb.json`](data/kb.json), 7 pages / 127 chunks, crawled 2026-10-29
 - **Write-up:** [`WRITEUP.md`](WRITEUP.md) (limitations and what I'd do with another week)
-- **Stack:** Python 3.11, FastAPI, BeautifulSoup, BM25 (`rank-bm25`), Google Gemini (free tier), plain HTML/JS chat UI, Docker on Hugging Face Spaces
+- **Stack:** Python 3.11, FastAPI, BeautifulSoup, BM25 (`rank-bm25`), Google Gemini (free tier), plain HTML/JS chat UI, deployed on Vercel (free plan); a Dockerfile is included for any container host
 
 ## What it does
 
@@ -30,7 +21,7 @@ A chatbot that answers visitor questions using **only** the 7 PlacidWay pages fr
 | Cost questions | Prices are copied with currency and context (starting from, out-patient vs in-patient, 3 weeks, what's included, optional extras). Code checks that each price is on a cited page **and sits next to the right treatment, clinic or country** (so "$64 for adenocarcinoma" or "Turkey $64" is rejected when $64 is a Thailand clinic). A price the user states ("I heard it's $50") is checked against the pages for that treatment before the model answers. |
 | Chat UI | `static/index.html`: suggestions, typing indicator, source chips, one-time medical note, inline quote form, works on mobile, right-to-left text handled. |
 | Refresh | `python -m app.ingest` locally, or `POST /api/refresh` on the live bot. A refresh only replaces the knowledge base if every page came back, and reports which pages changed. |
-| Live deployment | Docker on Hugging Face Spaces (free CPU). Steps in [`docs/DEPLOY.md`](docs/DEPLOY.md). |
+| Live deployment | Vercel (free Hobby plan, serverless Python). Vercel detects the FastAPI app in `app/main.py`; secrets are Vercel environment variables. A `Dockerfile` is also included. Steps in [`docs/DEPLOY.md`](docs/DEPLOY.md). |
 
 **Nice to have, all done:** answers in the user's language (Spanish, Arabic, ...; fixed replies and fallbacks are translated to Spanish and Arabic too), follow-up questions using chat history, a medical disclaimer shown once per conversation, lead capture (name + email + consent), logging of unanswered questions (`GET /api/admin/gaps`). Optional voice agent: [`docs/VOICE.md`](docs/VOICE.md).
 
@@ -143,7 +134,7 @@ tests/              unit tests with HTML fixtures and a fake LLM;
 
 ## Security and privacy
 
-No secrets in the code: the Gemini key and admin token come from environment variables (Hugging Face Space secrets, or `.env` locally, which is git-ignored). Logs store questions for content-gap analysis; server logs never print chat text or lead details. Leads require a consent tick.
+No secrets in the code: the Gemini key and admin token come from environment variables (encrypted Vercel environment variables, or `.env` locally, which is git-ignored). Logs store questions for content-gap analysis; server logs never print chat text or lead details. Leads require a consent tick.
 
 - **Rate limits:** per IP (40 per 10 minutes, enough for a reviewer running a long list of questions) plus a global cap for all visitors together (200 per 10 minutes). The per-IP key comes from `X-Forwarded-For`, which a client can fake, so the global cap is what really protects the free Gemini quota.
 - **Admin and voice secrets** are compared in constant time. The voice tool is disabled unless `VAPI_TOOL_SECRET` is set.
